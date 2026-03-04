@@ -2,10 +2,10 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Andra - Rastreamento de Pedidos</title>
     
-    <link rel="icon" type="image/png" href="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD04NTI3JnZlcj0xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT0wLjAzODc3NCZ1SWQ9MjgmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.png">
+    <link rel="icon" type="image/png" href="https://intranet.andra.com.br/wp-content/uploads/2019/08/favicon_andra_114.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -32,16 +32,16 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden; /* PROTEÇÃO EXTRA: Mata qualquer scroll horizontal */
             
             /* ==================== TEXTURA DE FUNDO ==================== */
             background-color: var(--gray-bg);
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
         }
 
-        /* ==================== CABEÇALHO (NOVO FORMATO) ==================== */
-/* ==================== CABEÇALHO (NOVO FORMATO) ==================== */
+        /* ==================== CABEÇALHO ==================== */
         .site-header {
-            background-color: var(--andra-dark-red); /* <-- SÓ TROCAR AQUI PARA DARK-RED */
+            background-color: var(--andra-dark-red); /* Fundo Vinho para destacar a logo */
             padding: 12px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             position: relative;
@@ -57,20 +57,17 @@
             justify-content: space-between;
         }
 
-        /* Logo sem o fundo branco, respirando no vermelho */
         .header-logo {
             max-height: 48px;
             display: block;
         }
 
-        /* Grupo da direita (Botão de Lojas + Título) */
         .header-right {
             display: flex;
             align-items: center;
             gap: 20px;
         }
 
-        /* Novo link "Nossas Lojas" */
         .nav-link {
             color: #fff;
             text-decoration: none;
@@ -92,7 +89,7 @@
             font-size: 16px;
             font-weight: bold;
             display: none;
-            border-left: 1px solid rgba(255, 255, 255, 0.3); /* Linha divisória */
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
             padding-left: 20px;
         }
 
@@ -136,7 +133,6 @@
             font-size: 16px;
         }
 
-        /* Inputs estilizados */
         .form-group {
             position: relative;
             margin-bottom: 25px;
@@ -168,7 +164,6 @@
             background: #fff;
         }
 
-        /* Botão Vermelho */
         .btn-consultar {
             width: 100%;
             padding: 18px;
@@ -208,7 +203,6 @@
         .step.ativo .step-numero { background: #fff; border-color: var(--andra-red); color: var(--andra-red); box-shadow: 0 0 0 5px rgba(199, 29, 35, 0.15); transform: scale(1.15); }
         .step.ativo .step-info strong { color: var(--andra-red); font-weight: 700; font-size: 17px; }
 
-        /* Loading e Erros */
         .loading { display: none; text-align: center; padding: 40px; }
         .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--andra-red); border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -268,6 +262,8 @@
 
         .social-icons {
             display: flex;
+            flex-wrap: wrap; /* ESSENCIAL PARA O MOBILE: Permite quebrar em 2 linhas se não couber */
+            justify-content: center;
             gap: 10px;
         }
 
@@ -304,10 +300,32 @@
             margin: 0;
         }
 
+        /* ==================== RESPONSIVIDADE (MOBILE PERFECT) ==================== */
         @media(max-width: 768px) {
-            .footer-top { flex-direction: column; text-align: center; }
-            .footer-brand { flex-direction: column; text-align: center; }
-            .header-title { border-left: none; padding-left: 0; }
+            /* Aperta um pouco o header */
+            .header-logo { max-height: 40px; }
+            .nav-link { font-size: 12px; }
+            
+            /* Tira o excesso de borda branca do card para sobrar espaço pros inputs */
+            .main-content { padding: 40px 15px; }
+            .card-consulta { padding: 30px 20px; }
+            .card-consulta h2 { font-size: 24px; }
+            .subtitulo { font-size: 14px; margin-bottom: 25px; }
+            
+            /* Organiza o Rodapé para celular */
+            .footer-top { 
+                flex-direction: column; 
+                text-align: center; 
+                padding: 20px 15px;
+            }
+            .footer-brand { 
+                flex-direction: column; 
+                text-align: center; 
+                gap: 10px;
+            }
+            .footer-brand-text p {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -391,7 +409,7 @@
                 <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD04NTI3JnZlcj0xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT0wLjAzODc3NCZ1SWQ9MjgmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.png" alt="Logo Andra Footer" class="footer-logo">
                 <div class="footer-brand-text">
                     <h1><strong>ELÉTRICA ANDRA</strong></h1>
-                    <p>Acompanhe em tempo real com segurança e agilidade.</p>
+                    <p>Acompanhe em tempo real e planeje sua obra com segurança e agilidade.</p>
                 </div>
             </div>
 
@@ -485,7 +503,7 @@
             document.getElementById('loading').style.display = 'block';
 
             try {
-                // Aguardando a construção do Node.js
+                // Fica em stand-by até fazermos a parte do Node.js
                 const API_NODE_URL = 'http://localhost:3000/api/rastreio';
 
                 const resposta = await fetch(API_NODE_URL, {
