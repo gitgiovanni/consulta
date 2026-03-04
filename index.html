@@ -20,8 +20,7 @@
         :root {
             --andra-red: #c71d23;
             --andra-dark-red: #a0171c;
-            /* Cinza de fundo base */
-            --gray-bg: #f0f2f5; 
+            --gray-bg: #f4f6f9; 
             --text-dark: #333;
             --text-light: #777;
         }
@@ -33,10 +32,10 @@
             flex-direction: column;
             min-height: 100vh;
             
-            /* ==================== TEXTURA DE FUNDO (NOVO) ==================== */
-            /* Textura sutil de ruído para dar aspecto premium */
+            /* ==================== TEXTURA DE FUNDO ==================== */
+            /* Textura de ruído (noise) para dar profundidade premium ao site */
             background-color: var(--gray-bg);
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C9C9C' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
         }
 
         /* ==================== CABEÇALHO ==================== */
@@ -81,7 +80,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 60px 20px; /* Aumentado padding para dar mais ar */
+            padding: 60px 20px;
         }
 
         .card-consulta {
@@ -89,9 +88,11 @@
             max-width: 600px;
             background: #fff;
             border-radius: 8px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1); /* Sombra mais suave e profunda */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             border: 1px solid #e1e1e1;
-            padding: 50px; /* Aumentado padding interno */
+            padding: 50px;
+            position: relative;
+            z-index: 5;
         }
 
         .card-consulta h2 {
@@ -196,21 +197,20 @@
         .footerNOVO {
             background-color: #ffffff;
             border-top: 4px solid var(--andra-red);
-            padding: 50px 20px;
+            padding: 50px 20px 30px 20px;
             text-align: center;
             box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
             position: relative;
             z-index: 10;
         }
 
-        /* CORREÇÃO DO ÍCONE DO RODAPÉ (Usando a URL estável do topo) */
         .footer-logo { 
-            max-width: 100px; /* Aumentado um pouco */
+            max-width: 100px; 
             height: auto;
-            background-color: #f1f1f1; /* Fundo cinza leve para destacar a logo branca */
+            background-color: #f1f1f1;
             padding: 8px 20px;
             border-radius: 4px;
-            margin-bottom: 20px; 
+            margin-bottom: 25px; 
         }
         
         .footerNOVO .content h1 strong {
@@ -228,16 +228,34 @@
             line-height: 1.7;
         }
 
+        /* Ícones Sociais MODERNOS (VETOR) baseados no FontAwesome */
         .social-icons {
             display: flex;
             justify-content: center;
-            gap: 20px; /* Aumentado gap */
+            gap: 15px;
             flex-wrap: wrap;
             margin-bottom: 30px;
         }
 
-        .social-icons a { transition: transform 0.2s; display: inline-block; }
-        .social-icons a:hover { transform: translateY(-5px); }
+        .social-icons a { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background-color: var(--andra-red);
+            color: #fff;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover { 
+            background-color: var(--andra-dark-red);
+            transform: translateY(-4px); 
+            box-shadow: 0 4px 10px rgba(199, 29, 35, 0.3);
+        }
 
         .footer-developers {
             background-color: #f5f5f5;
@@ -249,7 +267,6 @@
             margin: 0 auto;
             border: 1px solid #eee;
         }
-
     </style>
 </head>
 <body>
@@ -328,33 +345,19 @@
         </div>
         
         <div class="social-icons">
-            <a href="https://api.whatsapp.com/send?phone=5511952707000&text=Ol%C3%A1%20ANDRA" target="_blank">
-                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=xNzYyJnZlcj=xMDAwJmZpbGU9d2hhdHNhcHAucG5nJmNyYz=zNDY3NzUxOTgwJnNpemU=wLjAyOTE0MyZ1SWQ=MjUmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png" alt="WhatsApp" style="width: 36px; height: auto;">
-            </a>
-            <a href="https://www.linkedin.com/company/eletricaandra" target="_blank">
-                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=xNzAwJnZlcj=xMDAwJmZpbGU9bGlua2VkaW4ucG5nJmNyYz=xNjY2MTgxMDY3JnNpemU=wLjAxMjAxMiZ1SWQ=MjUmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png" alt="LinkedIn" style="width: 36px; height: auto;">
-            </a>
-            <a href="https://www.facebook.com/eletricaAndra" target="_blank">
-                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=xNjk5JnZlcj=xMDAwJmZpbGU9ZmFjZWJvb2sucG5nJmNyYz=zODAwNzU3MjQwJnNpemU=wLjAxNTI5NiZ1SWQ=MjUmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png" alt="Facebook" style="width: 36px; height: auto;">
-            </a>
-            <a href="https://www.instagram.com/eletricaandra/" target="_blank">
-                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=xNjk4JnZlcj=xMDAwJmZpbGU9aW5zdGFncmFtLnBuZyZjcmM=MjE4Mzg2MTY5NyZzaXpl=wLjA1NzU4MyZ1SWQ=MjUmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png" alt="Instagram" style="width: 36px; height: auto;">
-            </a>
-            <a href="https://www.youtube.com/@eletricaandra" target="_blank">
-                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=xODE5JnZlcj=xMDAwJmZpbGU9eW91dHViZS5wbmcmY3JjPTI1NTQzOTA2NCZzaXpl=wLjAxMjk5NSZ1SWQ=MjUmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png" alt="YouTube" style="width: 36px; height: auto;">
-            </a>
-            <a href="https://www.andra.com.br/" target="_blank">
-                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=xNzk3JnZlcj=xMDAwJmZpbGU9YW5kcmEtbG9nbyslMjgxJTI5KyUyODElMjkucG5nJmNyYz=0MjIwODY0MTU4JnNpemU=wLjAwNzA2NyZ1SWQ=MjUmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png" alt="Site Andra" style="width: 36px; height: auto;">
-            </a>
-            <a href="https://twitter.com/eletricaandra" target="_blank">
-                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=yMTMxJnZlcj=xMDAwJmZpbGU9dHdpdHRlci5wbmcmY3JjPTI4Mjg5MDUwNzcmc2l6ZT=wLjAwNzg4NyZ1SWQ=MjUmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png" alt="Twitter" style="width: 36px; height: auto;">
-            </a>
+            <a href="https://api.whatsapp.com/send?phone=5511952707000&text=Ol%C3%A1%20ANDRA" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="https://www.linkedin.com/company/eletricaandra" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://www.facebook.com/eletricaAndra" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/eletricaandra/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.youtube.com/@eletricaandra" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://www.andra.com.br/" target="_blank" title="Site Oficial"><i class="fa-solid fa-globe"></i></a>
+            <a href="https://twitter.com/eletricaandra" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
         </div>
         
         <div class="footer-developers">
-            <p><strong>Desenvolvido por ANDRA S.A. Electric Solutions | © 2024 Todos os direitos reservados.</strong></p>
+            <p><strong>Desenvolvido por ANDRA S.A. Electric Solutions | © 2026 Todos os direitos reservados.</strong></p>
         </div>
-        </footer>
+    </footer>
 
     <script>
         // --- 1. MÁSCARA INTELIGENTE CPF/CNPJ ---
@@ -413,7 +416,7 @@
             document.getElementById('form').style.display = 'block';
         }
 
-        // --- 3. MOTOR DE COMUNICAÇÃO COM O NOVO BACKEND NODE.JS ---
+        // --- 3. MOTOR DE COMUNICAÇÃO (API) ---
         async function consultarPedido() {
             const pedidoInput = document.getElementById('pedido').value;
             const docInput = document.getElementById('documento').value;
@@ -428,14 +431,11 @@
             document.getElementById('loading').style.display = 'block';
 
             try {
-                // URL preparada para o servidor Node.js local
                 const API_NODE_URL = 'http://localhost:3000/api/rastreio';
 
                 const resposta = await fetch(API_NODE_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         pedido: pedidoInput,
                         documento: docInput
@@ -451,21 +451,19 @@
                 const dadosServidor = await resposta.json();
 
                 if (dadosServidor && dadosServidor.encontrado) {
-                    
                     document.getElementById('num-pedido').textContent = dadosServidor.numero_pedido;
                     document.getElementById('data-update').textContent = dadosServidor.previsao_entrega;
                     
                     atualizarTimeline(parseInt(dadosServidor.status_pedido));
                     
                     document.getElementById('resultado').style.display = 'block';
-
                 } else {
                     mostrarErro("Pedido ou CPF/CNPJ não encontrados na nossa base.");
                     document.getElementById('form').style.display = 'block';
                 }
 
             } catch (error) {
-                console.error('Falha de conexão com a API Node:', error);
+                console.error('Falha de conexão:', error);
                 document.getElementById('loading').style.display = 'none';
                 mostrarErro("Sistema indisponível momentaneamente. Tente novamente mais tarde.");
                 document.getElementById('form').style.display = 'block';
