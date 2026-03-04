@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andra - Rastreamento de Pedidos</title>
     
-    <link rel="icon" type="image/png" href="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=8NTI3JnZlcj=xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT=wLjAzODc3NCZ1SWQ9MjgmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png">
+    <link rel="icon" type="image/png" href="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD04NTI3JnZlcj0xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT0wLjAzODc3NCZ1SWQ9MjgmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.png">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -23,7 +23,6 @@
             --gray-bg: #f4f6f9; 
             --text-dark: #333;
             --text-light: #777;
-            /* Nova variável para cor do texto no rodapé compacto */
             --text-footer: #666; 
         }
 
@@ -35,7 +34,6 @@
             min-height: 100vh;
             
             /* ==================== TEXTURA DE FUNDO ==================== */
-            /* Textura sutil de ruído/papel corporativo em alta definição */
             background-color: var(--gray-bg);
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
         }
@@ -43,7 +41,7 @@
         /* ==================== CABEÇALHO ==================== */
         .site-header {
             background-color: var(--andra-red);
-            padding: 10px 0; /* Compactado verticalmente */
+            padding: 10px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             position: relative;
             z-index: 10;
@@ -59,7 +57,7 @@
         }
 
         .header-logo {
-            max-height: 45px; /* Compactado */
+            max-height: 45px;
             background-color: #fff;
             padding: 4px 12px;
             border-radius: 4px;
@@ -67,7 +65,7 @@
 
         .header-title {
             color: #fff;
-            font-size: 18px; /* Compactado */
+            font-size: 18px;
             font-weight: bold;
             display: none;
         }
@@ -76,14 +74,13 @@
             .header-title { display: block; }
         }
 
-        /* ==================== ÁREA CENTRAL (RASTREIO) - MAIS ESPAÇO ==================== */
+        /* ==================== ÁREA CENTRAL (RASTREIO) ==================== */
         .main-content {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            /* Aumentado o espaço para dar ar ao card de rastreio */
-            padding: 80px 20px; 
+            padding: 60px 20px; 
         }
 
         .card-consulta {
@@ -93,7 +90,6 @@
             border-radius: 8px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             border: 1px solid #e1e1e1;
-            /* Aumentado o padding interno para dar aspecto mais nobre */
             padding: 50px; 
             position: relative;
             z-index: 5;
@@ -181,7 +177,6 @@
         .step-info strong { display: block; font-size: 16px; color: #555; }
         .step-info small { font-size: 13px; color: #999; }
 
-        /* Estados da Timeline */
         .step.completo, .step.ativo { opacity: 1; }
         .step.completo .step-numero { background: var(--andra-red); border-color: var(--andra-red); color: white; }
         .step.ativo .step-numero { background: #fff; border-color: var(--andra-red); color: var(--andra-red); box-shadow: 0 0 0 5px rgba(199, 29, 35, 0.15); transform: scale(1.15); }
@@ -197,62 +192,73 @@
         .btn-voltar { width: 100%; padding: 16px; background: #fff; color: #666; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 25px; }
         .btn-voltar:hover { background: #eee; color: #333; }
 
-        /* ==================== RODAPÉ (REVISADO E COMPACTADO DRASTICAMENTE) ==================== */
+        /* ==================== RODAPÉ HORIZONTAL (NOVO E COMPACTO) ==================== */
         .footerNOVO {
             background-color: #ffffff;
             border-top: 4px solid var(--andra-red);
-            /* Reduzido o padding vertical de 50px para 30px */
-            padding: 30px 20px 20px 20px; 
-            text-align: center;
             box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
             position: relative;
             z-index: 10;
         }
 
+        /* Container que deixa tudo na horizontal */
+        .footer-top {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Permite quebrar linha no celular */
+            gap: 20px;
+        }
+
+        /* Bloco da Esquerda (Logo + Texto) */
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         .footer-logo { 
-            max-width: 70px; /* Reduzido o tamanho da logo */
+            max-width: 55px; 
             height: auto;
             background-color: #f1f1f1;
-            padding: 6px 15px; /* Compactado */
+            padding: 5px 10px;
             border-radius: 4px;
-            margin-bottom: 15px; /* Reduzido margin */
         }
-        
-        .footerNOVO .content h1 strong {
+
+        .footer-brand-text h1 {
             color: var(--andra-red);
-            font-size: 18px; /* Reduzido tamanho da fonte */
-            display: block;
-            margin-bottom: 5px; /* Reduzido margin */
+            font-size: 18px;
+            margin-bottom: 3px;
         }
 
-        .footerNOVO .content p {
-            max-width: 700px; /* Reduzido largura máxima para alinhar melhor */
-            margin: 0 auto 20px auto; /* Reduzido margin inferior */
-            color: var(--text-footer); /* Usando cor de texto mais sutil */
-            font-size: 13px; /* Reduzido tamanho da fonte */
-            line-height: 1.5; /* Linhas mais próximas */
+        .footer-brand-text p {
+            color: var(--text-footer);
+            font-size: 13px;
+            margin: 0;
+            max-width: 450px;
+            line-height: 1.4;
         }
 
-        /* Ícones Sociais MODERNOS (VETOR) Compactados */
+        /* Bloco da Direita (Ícones Sociais na mesma linha) */
         .social-icons {
             display: flex;
-            justify-content: center;
-            gap: 12px; /* Reduzido gap */
-            flex-wrap: wrap;
-            margin-bottom: 20px; /* Reduzido margin */
+            gap: 10px;
         }
 
         .social-icons a { 
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 35px; /* Reduzido tamanho do botão */
-            height: 35px; /* Reduzido tamanho do botão */
+            width: 38px;
+            height: 38px;
             background-color: var(--andra-red);
             color: #fff;
             border-radius: 50%;
             text-decoration: none;
-            font-size: 16px; /* Reduzido tamanho do ícone */
+            font-size: 16px;
             transition: all 0.3s ease;
         }
 
@@ -262,15 +268,30 @@
             box-shadow: 0 3px 8px rgba(199, 29, 35, 0.25);
         }
 
-        .footer-developers {
-            background-color: #f8f9fa; /* Fundo mais sutil */
-            padding: 10px; /* Compactado verticalmente */
-            font-size: 12px; /* Reduzido tamanho da fonte */
-            color: #777; /* Texto mais sutil */
-            border-radius: 4px;
-            max-width: 600px;
-            margin: 0 auto;
-            border: 1px solid #eee;
+        /* Linha Inferior (Copyright) */
+        .footer-bottom {
+            background-color: #f8f9fa;
+            border-top: 1px solid #eee;
+            padding: 12px 20px;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            font-size: 12px;
+            color: #777;
+            margin: 0;
+        }
+
+        /* Ajuste para telas menores (Celulares) */
+        @media(max-width: 768px) {
+            .footer-top {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-brand {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -278,7 +299,7 @@
 
     <header class="site-header">
         <div class="header-container">
-            <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=8NTI3JnZlcj=xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT=wLjAzODc3NCZ1SWQ9MjgmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png" alt="Logo Andra" class="header-logo">
+            <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD04NTI3JnZlcj0xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT0wLjAzODc3NCZ1SWQ9MjgmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.png" alt="Logo Andra" class="header-logo">
             <span class="header-title">Portal de Rastreio</span>
         </div>
     </header>
@@ -342,24 +363,29 @@
     </main>
 
     <footer class="footerNOVO">
-        <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD=8NTI3JnZlcj=xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT=wLjAzODc3NCZ1SWQ9MjgmZlNJZD=xJnVTSWQ=x&d=fWxzZ&tkn=&publicUrl=true&attach=false.png" alt="Logo Andra Footer" class="footer-logo">
-        
-        <div class="content">
-            <h1><strong>ELÉTRICA ANDRA</strong></h1>
-            <p>Portal de Rastreio desenvolvido para garantir transparência na entrega dos seus materiais elétricos. Acompanhe em tempo real e planeje sua obra com segurança e agilidade.</p>
+        <div class="footer-top">
+            
+            <div class="footer-brand">
+                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD04NTI3JnZlcj0xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT0wLjAzODc3NCZ1SWQ9MjgmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.png" alt="Logo Andra Footer" class="footer-logo">
+                <div class="footer-brand-text">
+                    <h1><strong>ELÉTRICA ANDRA</strong></h1>
+                    <p>Acompanhe em tempo real e planeje sua obra com segurança e agilidade.</p>
+                </div>
+            </div>
+
+            <div class="social-icons">
+                <a href="https://api.whatsapp.com/send?phone=5511952707000&text=Ol%C3%A1%20ANDRA" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.linkedin.com/company/eletricaandra" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://www.facebook.com/eletricaAndra" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/eletricaandra/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@eletricaandra" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                <a href="https://www.andra.com.br/" target="_blank" title="Site Oficial"><i class="fa-solid fa-globe"></i></a>
+                <a href="https://twitter.com/eletricaandra" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+            </div>
+
         </div>
         
-        <div class="social-icons">
-            <a href="https://api.whatsapp.com/send?phone=5511952707000&text=Ol%C3%A1%20ANDRA" target="_blank" title="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-            <a href="https://www.linkedin.com/company/eletricaandra" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
-            <a href="https://www.facebook.com/eletricaAndra" target="_blank" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/eletricaandra/" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://www.youtube.com/@eletricaandra" target="_blank" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
-            <a href="https://www.andra.com.br/" target="_blank" title="Site Oficial"><i class="fa-solid fa-globe"></i></a>
-            <a href="https://twitter.com/eletricaandra" target="_blank" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-        </div>
-        
-        <div class="footer-developers">
+        <div class="footer-bottom">
             <p>Desenvolvido por ANDRA S.A. Electric Solutions | © 2026 Todos os direitos reservados.</p>
         </div>
     </footer>
@@ -436,7 +462,7 @@
             document.getElementById('loading').style.display = 'block';
 
             try {
-                // URL preparada para o servidor Node.js local
+                // Fica em stand-by até fazermos a parte do Node.js
                 const API_NODE_URL = 'http://localhost:3000/api/rastreio';
 
                 const resposta = await fetch(API_NODE_URL, {
