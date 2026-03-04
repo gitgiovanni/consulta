@@ -38,10 +38,10 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
         }
 
-        /* ==================== CABEÇALHO ==================== */
+        /* ==================== CABEÇALHO (NOVO FORMATO) ==================== */
         .site-header {
             background-color: var(--andra-red);
-            padding: 10px 0;
+            padding: 12px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             position: relative;
             z-index: 10;
@@ -56,18 +56,43 @@
             justify-content: space-between;
         }
 
+        /* Logo sem o fundo branco, respirando no vermelho */
         .header-logo {
-            max-height: 45px;
-            background-color: #fff;
-            padding: 4px 12px;
-            border-radius: 4px;
+            max-height: 48px;
+            display: block;
+        }
+
+        /* Grupo da direita (Botão de Lojas + Título) */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Novo link "Nossas Lojas" */
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: opacity 0.3s;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
         }
 
         .header-title {
             color: #fff;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             display: none;
+            border-left: 1px solid rgba(255, 255, 255, 0.3); /* Linha divisória */
+            padding-left: 20px;
         }
 
         @media(min-width: 768px) {
@@ -192,7 +217,7 @@
         .btn-voltar { width: 100%; padding: 16px; background: #fff; color: #666; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 25px; }
         .btn-voltar:hover { background: #eee; color: #333; }
 
-        /* ==================== RODAPÉ HORIZONTAL (NOVO E COMPACTO) ==================== */
+        /* ==================== RODAPÉ HORIZONTAL ==================== */
         .footerNOVO {
             background-color: #ffffff;
             border-top: 4px solid var(--andra-red);
@@ -201,7 +226,6 @@
             z-index: 10;
         }
 
-        /* Container que deixa tudo na horizontal */
         .footer-top {
             max-width: 1200px;
             margin: 0 auto;
@@ -209,11 +233,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap; /* Permite quebrar linha no celular */
+            flex-wrap: wrap; 
             gap: 20px;
         }
 
-        /* Bloco da Esquerda (Logo + Texto) */
         .footer-brand {
             display: flex;
             align-items: center;
@@ -242,7 +265,6 @@
             line-height: 1.4;
         }
 
-        /* Bloco da Direita (Ícones Sociais na mesma linha) */
         .social-icons {
             display: flex;
             gap: 10px;
@@ -268,7 +290,6 @@
             box-shadow: 0 3px 8px rgba(199, 29, 35, 0.25);
         }
 
-        /* Linha Inferior (Copyright) */
         .footer-bottom {
             background-color: #f8f9fa;
             border-top: 1px solid #eee;
@@ -282,16 +303,10 @@
             margin: 0;
         }
 
-        /* Ajuste para telas menores (Celulares) */
         @media(max-width: 768px) {
-            .footer-top {
-                flex-direction: column;
-                text-align: center;
-            }
-            .footer-brand {
-                flex-direction: column;
-                text-align: center;
-            }
+            .footer-top { flex-direction: column; text-align: center; }
+            .footer-brand { flex-direction: column; text-align: center; }
+            .header-title { border-left: none; padding-left: 0; }
         }
     </style>
 </head>
@@ -300,7 +315,13 @@
     <header class="site-header">
         <div class="header-container">
             <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD04NTI3JnZlcj0xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT0wLjAzODc3NCZ1SWQ9MjgmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.png" alt="Logo Andra" class="header-logo">
-            <span class="header-title">Portal de Rastreio</span>
+            
+            <div class="header-right">
+                <a href="https://institucional.andra.com.br/lojas/" target="_blank" class="nav-link">
+                    <i class="fa-solid fa-location-dot"></i> Nossas Lojas
+                </a>
+                <span class="header-title">Portal de Rastreio</span>
+            </div>
         </div>
     </header>
 
@@ -462,7 +483,7 @@
             document.getElementById('loading').style.display = 'block';
 
             try {
-                // Fica em stand-by até fazermos a parte do Node.js
+                // Aguardando a construção do Node.js
                 const API_NODE_URL = 'http://localhost:3000/api/rastreio';
 
                 const resposta = await fetch(API_NODE_URL, {
