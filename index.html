@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andra - Rastreamento de Pedidos</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==================== RESET E VARIÁVEIS GLOBAIS ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --andra-red: #c71d23;
+            --andra-dark-red: #a0171c;
+            --gray-bg: #f4f6f9;
+            --text-dark: #333;
+            --text-light: #777;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--gray-bg);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Faz o rodapé ficar sempre no fundo */
+        }
+
+        /* ==================== CABEÇALHO (NOVO) ==================== */
+        .site-header {
+            background-color: var(--andra-red);
+            padding: 15px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-logo {
+            max-height: 50px;
+            background-color: #fff;
+            padding: 5px 15px;
+            border-radius: 4px;
+        }
+
+        .header-title {
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            display: none; /* Escondido no mobile, aparece em telas maiores */
+        }
+
+        @media(min-width: 768px) {
+            .header-title { display: block; }
+        }
+
+        /* ==================== ÁREA CENTRAL (RASTREIO) ==================== */
+        .main-content {
+            flex: 1; /* Faz esta área crescer e empurrar o rodapé para baixo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .card-consulta {
+            width: 100%;
+            max-width: 600px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e1e1e1;
+            padding: 40px;
+        }
+
+        .card-consulta h2 {
+            text-align: center;
+            font-size: 26px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .subtitulo {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        /* Inputs estilizados */
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: var(--andra-red);
+            font-size: 18px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fdfdfd;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--andra-red);
+            box-shadow: 0 0 0 3px rgba(199, 29, 35, 0.1);
+            background: #fff;
+        }
+
+        /* Botão Vermelho */
+        .btn-consultar {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--andra-red);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-consultar:hover { background-color: var(--andra-dark-red); }
+        .btn-consultar:active { transform: scale(0.98); }
+        
+        /* ==================== TIMELINE DE STATUS ==================== */
+        .status-resultado { display: none; margin-top: 10px; }
+        
+        .status-header { border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 25px; }
+        .status-header h3 { text-align: left; margin:0; font-size: 22px;}
+        .status-header p { text-align: left; margin:5px 0 0 0; color:#888; font-size:14px; }
+
+        .status-steps { margin: 30px 0; position: relative; padding-left: 20px; }
+        .status-steps::before { content: ''; position: absolute; top: 15px; bottom: 30px; left: 34px; width: 2px; background: #e9ecef; z-index: 1; }
+
+        .step { display: flex; align-items: flex-start; margin-bottom: 25px; position: relative; z-index: 2; opacity: 0.4; transition: all 0.4s ease; }
+        .step-numero { width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 2px solid #ccc; color: #ccc; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; font-size: 14px; font-weight: bold; transition: all 0.4s ease;}
+        .step-info strong { display: block; font-size: 16px; color: #555; transition: all 0.4s ease;}
+        .step-info small { font-size: 13px; color: #999; }
+
+        /* Estados da Timeline */
+        .step.completo, .step.ativo { opacity: 1; }
+        .step.completo .step-numero { background: var(--andra-red); border-color: var(--andra-red); color: white; }
+        .step.ativo .step-numero { background: #fff; border-color: var(--andra-red); color: var(--andra-red); box-shadow: 0 0 0 5px rgba(199, 29, 35, 0.15); transform: scale(1.15); }
+        .step.ativo .step-info strong { color: var(--andra-red); font-weight: 700; font-size: 17px; }
+
+        /* Loading e Erros */
+        .loading { display: none; text-align: center; padding: 40px; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--andra-red); border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .erro { display: none; background: #fff3f3; color: var(--andra-red); padding: 15px; border-radius: 4px; margin-top: 20px; text-align: center; border: 1px solid #ffcdd2; font-size: 14px; font-weight: 500;}
+        
+        .btn-voltar { width: 100%; padding: 14px; background: #fff; color: #666; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; font-weight: bold; cursor: pointer; transition: all 0.3s; margin-top: 20px; }
+        .btn-voltar:hover { background: #eee; color: #333; }
+
+        /* ==================== RODAPÉ (NOVO BASEADO NO SEU CÓDIGO) ==================== */
+        .footerNOVO {
+            background-color: #ffffff;
+            border-top: 4px solid var(--andra-red);
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+        }
+
+        .footerNOVO img { max-width: 80px; margin-bottom: 15px; }
+        
+        .footerNOVO .content h1 strong {
+            color: var(--andra-red);
+            font-size: 20px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footerNOVO .content p {
+            max-width: 800px;
+            margin: 0 auto 25px auto;
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .social-icons a { transition: transform 0.2s; display: inline-block; }
+        .social-icons a:hover { transform: translateY(-3px); }
+
+        .footer-developers {
+            background-color: #f1f1f1;
+            padding: 15px;
+            font-size: 13px;
+            color: #555;
+            border-radius: 4px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footerNOVO label p {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        .footerNOVO label a {
+            color: var(--andra-red);
+            text-decoration: none;
+        }
+        .footerNOVO label a:hover { text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="header-container">
+            <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD04NTI3JnZlcj0xMDAwJmZpbGU9QU5EUkErJTI4MSUyOS5wbmcmY3JjPTE2OTA1NzMxMTQmc2l6ZT0wLjAzODc3NCZ1SWQ9MjgmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.png" alt="Logo Andra" class="header-logo">
+            <span class="header-title">Portal do Cliente</span>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="card-consulta">
+            <div id="form">
+                <h2>Rastreamento de Pedidos</h2>
+                <p class="subtitulo">Acompanhe a entrega dos seus materiais elétricos em tempo real</p>
+                
+                <div class="form-group">
+                    <span class="input-icon"><i class="fa-solid fa-hashtag"></i></span>
+                    <input type="text" id="pedido" placeholder="Número do Pedido (Ex: 1003)">
+                </div>
+                <div class="form-group">
+                    <span class="input-icon"><i class="fa-regular fa-address-card"></i></span>
+                    <input type="text" id="documento" placeholder="CPF ou CNPJ cadastrado">
+                </div>
+                
+                <button class="btn-consultar" onclick="consultarPedido()">Rastrear Meu Pedido</button>
+                <div id="erro" class="erro"></div>
+            </div>
+            
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p style="color: #666; font-weight: bold;">Conectando à base de dados...</p>
+            </div>
+            
+            <div id="resultado" class="status-resultado">
+                <div class="status-header">
+                    <h3>Pedido <strong style="color:var(--andra-red);">#<span id="num-pedido"></span></strong></h3>
+                    <p>Previsão de Entrega: <strong style="color:#555;"><span id="data-update"></span></strong></p>
+                </div>
+                
+                <div class="status-steps">
+                    <div class="step" data-step="1">
+                        <div class="step-numero"><i class="fa-solid fa-check"></i></div>
+                        <div class="step-info"><strong>Recebido</strong><small>Pagamento confirmado</small></div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-numero">2</div>
+                        <div class="step-info"><strong>Em Separação</strong><small>Produtos sendo separados no estoque</small></div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-numero">3</div>
+                        <div class="step-info"><strong>Em Trânsito</strong><small>Sua entrega está em deslocamento</small></div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-numero">4</div>
+                        <div class="step-info"><strong>Saiu para Entrega</strong><small>O motorista está a caminho do endereço</small></div>
+                    </div>
+                    <div class="step" data-step="5">
+                        <div class="step-numero">5</div>
+                        <div class="step-info"><strong>Entregue</strong><small>Pedido finalizado com sucesso</small></div>
+                    </div>
+                </div>
+                
+                <button class="btn-voltar" onclick="voltarConsulta()">Consultar Outro Pedido</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footerNOVO">
+        <img src="https://intranet.andra.com.br/wp-content/uploads/2019/08/favicon_andra_114.png" alt="Ícone ANDRA">
+        <div class="content">
+            <h1><strong>ELÉTRICA ANDRA</strong></h1>
+            <p>O Portal de Rastreio foi desenvolvido para que você tenha total controle e visibilidade sobre a entrega dos seus materiais. Com agilidade e transparência, levamos a energia que move os seus projetos!</p>
+        </div>
+        
+        <div class="social-icons">
+            <a href="https://api.whatsapp.com/send?phone=5511952707000&text=Ol%C3%A1%20ANDRA" target="_blank">
+                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xNzYyJnZlcj0xMDAwJmZpbGU9d2hhdHNhcHAucG5nJmNyYz0zNDY3NzUxOTgwJnNpemU9MC4wMjkxNDMmdUlkPTI1JmZTSWQ9MSZ1U0lkPTEmZD1mYWxzZSZ0a249JnB1YmxpY1VybD10cnVlJmF0dGFjaD1mYWxzZQ==.png" alt="WhatsApp" style="width: 32px; height: auto;">
+            </a>
+            <a href="https://outlook.maiex13.com.br/owa/#path=/mail/inbox" target="_blank">
+                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xODE4JnZlcj0xMDAwJmZpbGU9b3V0bG9vay5wbmcmY3JjPTQxODk0NzQyMDEmc2l6ZT0wLjAxMTU2MyZ1SWQ9MjUmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.png" alt="Outlook" style="width: 32px; height: auto;">
+            </a>
+            <a href="https://www.linkedin.com/company/eletricaandra" target="_blank">
+                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xNzAwJnZlcj0xMDAwJmZpbGU9bGlua2VkaW4ucG5nJmNyYz0xNjY2MTgxMDY3JnNpemU9MC4wMTIwMTImdUlkPTI1JmZTSWQ9MSZ1U0lkPTEmZD1mYWxzZSZ0a249JnB1YmxpY1VybD10cnVlJmF0YWNoPWZhbHNl.png" alt="LinkedIn" style="width: 32px; height: auto;">
+            </a>
+            <a href="https://www.facebook.com/eletricaAndra" target="_blank">
+                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xNjk5JnZlcj0xMDAwJmZpbGU9ZmFjZWJvb2sucG5nJmNyYz0zODAwNzU3MjQwJnNpemU9MC4wMTUyOTYmdUlkPTI1JmZTSWQ9MSZ1U0lkPTEmZD1mYWxzZSZ0a249JnB1YmxpY1VybD10cnVlJmF0dGFjaD1mYWxzZQ==.png" alt="Facebook" style="width: 32px; height: auto;">
+            </a>
+            <a href="https://www.instagram.com/eletricaandra/" target="_blank">
+                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xNjk4JnZlcj0xMDAwJmZpbGU9aW5zdGFncmFtLnBuZyZjcmM9MjE4Mzg2MTY5NyZzaXplPTAuMDU3NTgzJnVJZD0yNSZmU0lkPTEmdVNJZD0xJmQ9ZmFsc2UmdGtuPSZwdWJsaWNVcmw9dHJ1ZSZhdHRhY2g9ZmFsc2U=.png" alt="Instagram" style="width: 32px; height: auto;">
+            </a>
+            <a href="https://www.youtube.com/@eletricaandra" target="_blank">
+                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xODE5JnZlcj0xMDAwJmZpbGU9eW91dHViZS5wbmcmY3JjPTI1NTQzOTA2NCZzaXplPTAuMDEyOTk1JnVJZD0yNSZmU0lkPTEmdVNJZD0xJmQ9ZmFsc2UmdGtuPSZwdWJsaWNVcmw9dHJ1ZSZhdHRhY2g9ZmFsc2U=.png" alt="YouTube" style="width: 32px; height: auto;">
+            </a>
+            <a href="https://www.andra.com.br/" target="_blank">
+                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0xNzk3JnZlcj0xMDAwJmZpbGU9YW5kcmEtbG9nbyslMjgxJTI5KyUyODElMjkucG5nJmNyYz00MjIwODY0MTU4JnNpemU9MC4wMDYwNjcmdUlkPTI1JmZTSWQ9MSZ1U0lkPTEmZD1mYWxzZSZ0a249JnB1YmxpY1VybD10cnVlJmF0dGFjaD1mYWxzZQ==.png" alt="Site Andra" style="width: 32px; height: auto;">
+            </a>
+            <a href="https://twitter.com/eletricaandra" target="_blank">
+                <img src="https://fluig.andra.com.br/volume/stream/Rmx1aWc=/P3Q9MSZ2b2w9RGVmYXVsdCZpZD0yMTMxJnZlcj0xMDAwJmZpbGU9dHdpdHRlci5wbmcmY3JjPTI4Mjg5MDUwNzcmc2l6ZT0wLjAwNzg4NyZ1SWQ9MjUmZlNJZD0xJnVTSWQ9MSZkPWZhbHNlJnRrbj0mcHVibGljVXJsPXRydWUmYXR0YWNoPWZhbHNl.png" alt="Twitter" style="width: 32px; height: auto;">
+            </a>
+        </div>
+        
+        <div class="footer-developers">
+            <p><strong>Desenvolvido por ANDRA S.A. Electric Solutions</strong></p>
+        </div>
+        <label>
+            <p>Dúvidas e problemas técnicos? <a href="#">Acesse nosso Suporte &rarr;</a></p>
+        </label>
+    </footer>
+
+    <script>
+        // --- 1. MÁSCARA INTELIGENTE CPF/CNPJ ---
+        function aplicarMascaraDocumento(input) {
+            let value = input.value.replace(/\D/g, ''); 
+            if (value.length <= 11) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            } else {
+                value = value.substring(0, 14); 
+                value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+                value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+                value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
+                value = value.replace(/(\d{4})(\d)/, '$1-$2');
+            }
+            input.value = value;
+        }
+
+        const inputDocumento = document.getElementById('documento');
+        if(inputDocumento) {
+            inputDocumento.addEventListener('input', () => aplicarMascaraDocumento(inputDocumento));
+        }
+        
+        // --- 2. FUNÇÕES DE INTERFACE (UI) ---
+        function mostrarErro(mensagem) {
+            const erro = document.getElementById('erro');
+            erro.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> ' + mensagem;
+            erro.style.display = 'block';
+        }
+        
+        function atualizarTimeline(statusAtual) {
+            const steps = document.querySelectorAll('.step');
+            
+            steps.forEach(step => {
+                const numero = parseInt(step.dataset.step);
+                const numeroEl = step.querySelector('.step-numero');
+                const iconeOriginial = numero === 1 ? '<i class="fa-solid fa-check"></i>' : numero;
+                
+                step.classList.remove('ativo', 'completo');
+                numeroEl.innerHTML = iconeOriginial; 
+                
+                if (numero < statusAtual) {
+                    step.classList.add('completo');
+                    numeroEl.innerHTML = '<i class="fa-solid fa-check"></i>'; 
+                } else if (numero === statusAtual) {
+                    step.classList.add('ativo');
+                }
+            });
+        }
+        
+        function voltarConsulta() {
+            document.getElementById('resultado').style.display = 'none';
+            document.getElementById('pedido').value = '';
+            document.getElementById('documento').value = '';
+            document.getElementById('form').style.display = 'block';
+        }
+
+        // --- 3. MOTOR DE COMUNICAÇÃO COM O NOVO BACKEND NODE.JS ---
+        async function consultarPedido() {
+            const pedidoInput = document.getElementById('pedido').value;
+            const docInput = document.getElementById('documento').value;
+
+            // Validação simples de tela
+            if(!pedidoInput || !docInput) {
+                mostrarErro("Por favor, preencha o número do pedido e o documento.");
+                return;
+            }
+
+            // Alterna a interface para "Carregando"
+            document.getElementById('form').style.display = 'none';
+            document.getElementById('erro').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+
+            try {
+                /* * A MÁGICA ACONTECE AQUI! 
+                 * Esta URL vai apontar para o nosso servidor Node.js que vamos construir.
+                 * Por enquanto, deixamos apontado para localhost (sua máquina).
+                 */
+                const API_NODE_URL = 'http://localhost:3000/api/rastreio';
+
+                // Disparo limpo, sem OAuth, sem complicação. 
+                const resposta = await fetch(API_NODE_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    // Enviamos apenas o que o servidor precisa saber:
+                    body: JSON.stringify({
+                        pedido: pedidoInput,
+                        documento: docInput
+                    })
+                });
+
+                // Tira o loading da tela
+                document.getElementById('loading').style.display = 'none';
+
+                if (!resposta.ok) {
+                    throw new Error("Erro ao consultar o servidor da Andra.");
+                }
+
+                const dadosServidor = await resposta.json();
+
+                // Lógica simples: Se o Node achou o pedido, ele devolve o status.
+                if (dadosServidor && dadosServidor.encontrado) {
+                    
+                    document.getElementById('num-pedido').textContent = dadosServidor.numero_pedido;
+                    document.getElementById('data-update').textContent = dadosServidor.previsao_entrega;
+                    
+                    // Acende as luzes da Timeline
+                    atualizarTimeline(parseInt(dadosServidor.status_pedido));
+                    
+                    // Mostra o resultado final
+                    document.getElementById('resultado').style.display = 'block';
+
+                } else {
+                    mostrarErro("Pedido ou CPF/CNPJ não encontrados na nossa base.");
+                    document.getElementById('form').style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Falha de conexão com a API Node:', error);
+                document.getElementById('loading').style.display = 'none';
+                mostrarErro("Servidor indisponível no momento. Tente novamente mais tarde.");
+                document.getElementById('form').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
